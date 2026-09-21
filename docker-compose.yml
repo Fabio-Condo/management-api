@@ -1,46 +1,61 @@
 version: "3.9"
 
 networks:
-  spc-network:
+  management-app-network:
     driver: bridge
 
 services:
-  spc-mysql:
+
+  management-app-mysql:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
     environment:
-      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_ROOT_PASSWORD: root
     ports:
       - "33066:3306"
+    restart: always
     networks:
-      - spc-network
+      - management-app-network
 
-  spc-api:
-    #image: spc-api  # Usar imagem local
-    image: fabiocondo/spc-api # Usar imagem do seu Docker Hub
+  management-app-redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    restart: always
+    networks:
+      - management-app-network
+
+  management-app-api:
+    image: fabiocondo/management-app-api
     environment:
-      DB_HOST: spc-mysql
-    networks:
-      - spc-network
-    volumes:
-      - C:\Users\user\Desktop\SPC-V2\Imagens:/app/imagens # Mapeia o diretório de imagens compartilhado com o contêiner
+      DB_HOST: management-app-mysql
+      REDIS_HOST: management-app-redis
+      REDIS_PORT: 6379
     depends_on:
-      - spc-mysql
+      - management-app-mysql
+      - management-app-redis
+    restart: always
+    networks:
+      - management-app-network
 
-  spc-proxy:
+  management-app-proxy:
     build: ./nginx
-    image: spc-proxy
+    image: management-app-proxy
     ports:
       - "80:80"
-    networks:
-      - spc-network
     depends_on:
-      - spc-api
+      - management-app-api
+    restart: always
+    networks:
+      - management-app-network
+
 
 
   # Se quiser usar a imagem que seta no docker hub
-  # docker pull fabiocondo/spc-api
-  # docker-compose up --scale spc-api=3
+  # docker pull fabiocondo/kudondza-api
+  # docker-compose up --scale kudondza-api=3
+
+  # docker compose up -d --scale kudondza-api=3
 
   # Passo 1: Build da aplicacao  (3 comando que contem -Pdocker)
   # ./mvnw clean package
@@ -53,4 +68,4 @@ services:
 
   # RESUMO DE COMANDOS POR EXECUTAR
   # ./mvnw clean package -DskipTests -Pdocker
-  # docker-compose up --scale spc-api=3
+  # docker-compose up --scale kudondza-api=3
