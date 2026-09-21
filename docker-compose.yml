@@ -1,12 +1,12 @@
 version: "3.9"
 
 networks:
-  management-app-network:
+  management-platform-network:
     driver: bridge
 
 services:
 
-  management-app-mysql:
+  management-platform-mysql:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
     environment:
@@ -15,39 +15,39 @@ services:
       - "33066:3306"
     restart: always
     networks:
-      - management-app-network
+      - management-platform-network
 
-  management-app-redis:
+  management-platform-redis:
     image: redis:latest
     ports:
       - "6379:6379"
     restart: always
     networks:
-      - management-app-network
+      - management-platform-network
 
-  management-app-api:
+  management-platform-api:
     image: fabiocondo/management-api
     environment:
-      DB_HOST: management-app-mysql
-      REDIS_HOST: management-app-redis
+      DB_HOST: management-platform-mysql
+      REDIS_HOST: management-platform-redis
       REDIS_PORT: 6379
     depends_on:
-      - management-app-mysql
-      - management-app-redis
+      - management-platform-mysql
+      - management-platform-redis
     restart: always
     networks:
-      - management-app-network
+      - management-platform-network
 
-  management-app-proxy:
+  management-platform-proxy:
     build: ./nginx
-    image: management-app-proxy
+    image: management-platform-proxy
     ports:
       - "80:80"
     depends_on:
-      - management-app-api
+      - management-platform-api
     restart: always
     networks:
-      - management-app-network
+      - management-platform-network
 
 
   # Se quiser usar a imagem que seta no docker hub
