@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+    <!--
+        ============================================================
+        PROPRIEDADES
+        ============================================================
+    -->
+
+    <!-- Diretório onde os logs serão armazenados -->
+    <property name="LOG_PATH" value="logs"/>
+
+    <!-- Ficheiro de log atual -->
+    <property name="LOG_FILE" value="${LOG_PATH}/application.log"/>
+
+    <!--
+        Formato:
+        data hora | nível | thread | logger | mensagem
+    -->
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} | %-5level | [%thread] | %logger{36} | %msg%n"/>
+
+
+    <!--
+        ============================================================
+        CONSOLE APPENDER
+        ============================================================
+    -->
+
+    <appender name="CONSOLE"
+              class="ch.qos.logback.core.ConsoleAppender">
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+
+    </appender>
+
+
+    <!--
+        ============================================================
+        FILE APPENDER
+        ============================================================
+    -->
+
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!-- Ficheiro atualmente em utilização -->
+        <file>${LOG_FILE}</file>
+
+        <!--
+            Rotação por data + tamanho.
+
+            Exemplo:
+            application-2026-08-25.0.log
+            application-2026-08-25.1.log
+            application-2026-08-25.2.log
+        -->
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+
+            <fileNamePattern>
+                ${LOG_PATH}/application-%d{yyyy-MM-dd}.%i.log.gz
+            </fileNamePattern>
+
+            <!-- Máximo de 30 dias de logs -->
+            <maxHistory>30</maxHistory>
+
+            <!-- Cada ficheiro no máximo 50 MB -->
+            <maxFileSize>50MB</maxFileSize>
+
+            <!-- Todos os arquivos antigos juntos não podem ultrapassar 2 GB -->
+            <totalSizeCap>2GB</totalSizeCap>
+
+            <!-- Limpar logs antigos quando a aplicação inicia -->
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+
+    </appender>
+
+
+    <!--
+        ============================================================
+        LOGGERS DA APLICAÇÃO
+        ============================================================
+    -->
+
+    <!--
+        Substitui "org.sci" pelo package principal da tua aplicação,
+        caso seja diferente.
+    -->
+    <logger name="org.sci" level="INFO"/>
+
+
+    <!--
+        ============================================================
+        SPRING / HIBERNATE
+        ============================================================
+    -->
+
+    <!-- Logs HTTP do Spring -->
+    <logger name="org.springframework" level="INFO"/>
+
+    <!-- Hibernate -->
+    <logger name="org.hibernate" level="WARN"/>
+
+    <!-- SQL do Hibernate não fica ativo em produção -->
+    <logger name="org.hibernate.SQL" level="WARN"/>
+
+    <!--
+        ============================================================
+        ROOT LOGGER
+        ============================================================
+    -->
+
+    <root level="INFO">
+
+        <!-- Continua a mostrar logs no terminal -->
+        <appender-ref ref="CONSOLE"/>
+
+        <!-- Guarda os logs em ficheiro -->
+        <appender-ref ref="FILE"/>
+
+    </root>
+
+</configuration>

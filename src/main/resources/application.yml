@@ -1,0 +1,27 @@
+security:
+  authentication-mode: LDAP # LOCAL ou LDAP
+
+allowed-web-client-origin: http://localhost:4200
+
+server:
+  port: 8080
+
+spring:
+
+  profiles:
+    active: dev
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false

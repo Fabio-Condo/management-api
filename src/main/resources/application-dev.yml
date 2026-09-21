@@ -1,0 +1,33 @@
+#jwt:
+#  secret: '[a-zA-Z0-9._]^+$Guidelines89797987forAlphabeticalArraNumeralsandOtherSymbo$'
+
+#encryption:
+#  secret-key: "NlM3UEhTQlhCQ09OTXNXakFOTFN0ZG5TTzBuT0JUa2M="
+
+spring:
+  datasource:
+    #url: jdbc:mysql://localhost:3306/management_platform?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=Africa/Harare
+    url: jdbc:mysql://localhost:3306/management_platform
+    username: root
+    password: root
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+#ldap:
+#  url: ldap://ldap.forumsys.com:389
+#  base: dc=example,dc=com
+#  user-search-base: ""
+#  user-search-filter: "(uid={0})"
+
+# LDAP DE TEST ONLINE - VER A DOC NESTE LINK
+# https://www.forumsys.com/2022/05/10/online-ldap-test-server
+# username: einstein
+# password: password
+
+#logging:
+#  level:
+#    org.springframework.ldap: DEBUG
+#    org.apache.directory: DEBUG
