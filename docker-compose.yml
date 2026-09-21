@@ -26,7 +26,7 @@ services:
       - management-app-network
 
   management-app-api:
-    image: fabiocondo/management-app-api
+    image: fabiocondo/management-api
     environment:
       DB_HOST: management-app-mysql
       REDIS_HOST: management-app-redis
@@ -68,3 +68,7 @@ services:
   # RESUMO DE COMANDOS POR EXECUTAR
   # ./mvnw clean package -DskipTests -Pdocker
   # docker-compose up --scale management-api=3
+
+  # FORCAR O COMMIT PARA DISPARAR O CI/CD QUANDO FALHAR COM COMMIT
+  # git commit --allow-empty -m "chore: retry CI"
+  # git push
