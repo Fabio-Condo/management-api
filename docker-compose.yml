@@ -48,3 +48,23 @@ services:
     restart: always
     networks:
       - management-app-network
+
+
+  # Se quiser usar a imagem que seta no docker hub
+  # docker pull fabiocondo/management-api
+  # docker-compose up --scale management-api=3
+
+  # docker compose up -d --scale management-api=3
+
+  # Passo 1: Build da aplicacao  (3 comando que contem -Pdocker)
+  # ./mvnw clean package
+  # ./mvnw clean package -DskipTests
+  # ./mvnw clean package -DskipTests -Pdocker
+
+  # Remover os containers
+  # docker compose down
+  # docker compose down --volumes # Elimina junto com os volumes que guardam dados da BD
+
+  # RESUMO DE COMANDOS POR EXECUTAR
+  # ./mvnw clean package -DskipTests -Pdocker
+  # docker-compose up --scale management-api=3
