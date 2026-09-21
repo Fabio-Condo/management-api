@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://${DB_HOST}/e-learning?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=Africa/Harare # Docker compose
+    url: jdbc:mysql://${DB_HOST}/management_platform?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=Africa/Harare # Docker compose
     username: root
     password: root
 
